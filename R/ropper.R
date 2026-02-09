@@ -7,7 +7,7 @@ ropper <- function(y, X, ses, tau.sq, H=1, method="optim") {
   ##   H - order of risk function approximation should be H = 1, H = 2, or H = 3
   
   ## add estimation of tau.sq here.
-  
+  #a
   B <- tau.sq/(ses + tau.sq)
   VV <- sqrt(B/(2*ses + tau.sq))
   
