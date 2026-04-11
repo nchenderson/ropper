@@ -1,16 +1,13 @@
-Qfunction <- function(beta.coef, y, X, ses, tau.sq, H) {
+Qfunction <- function(beta.coef, y, X, VV, H) {
   ### The ROPPER objective function to be minimized
   ## Inputs:
   ##.    beta.coef - vector of fixed-effects regression coefficients
   ##     y - length K vector of unit-specific estimates
   ##     X - K x p design matrix
-  ##     ses - length K vector of squared standard errors
-  ##     tau.sq - estimate of tau.sq
+  ##     V - length K vector of ranking shrinkage terms V_k
   ##     H - order of risk function approximation should be H = 1, H = 2, or H = 3
   
   resids <- as.numeric(y - X%*%beta.coef)
-  B <- tau.sq/(ses + tau.sq)
-  VV <- sqrt(B/(2*ses + tau.sq))
   if(H==1) {
     term1 <- sqrt(tau.sq/(2*pi))*mean(VV*dnorm(VV*resids))
   } else if(H==2) {

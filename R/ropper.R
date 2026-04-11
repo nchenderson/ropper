@@ -27,7 +27,7 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   }
   
   if(tau.sq=="reml") {
-      
+      ## Did we use winsorization for the REML estimate?
   } else if(tau.sq=="kNN") {
       
   }
@@ -46,24 +46,24 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   if(ncol(X)==1 & method=="optim") {
     if(H==1) {
       beta.rank <- optimize(Qfunction, lower=-10, upper=10, y=y, X=X,
-                            ses=ses, tau.sq=tau.sq, H=1, VV=VV)$minimum
+                            VV=VV, H=1, VV=VV)$minimum
     } else if(H==2) {
-      beta.rank <- optimize(Qfn, lower=-10,upper=10, y=y, X=X,
-                            ses=ses, tau.sq=tau.sq, H=2, VV=VV)$minimum
+      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=y, X=X,
+                            VV=VV, H=2, VV=VV)$minimum
     } else if(H==3) {
-      beta.rank <- optimize(Qfn, lower=-10,upper=10, y=y, X=X,
-                            ses=ses, tau.sq=tau.sq, H=3, VV=VV)$minimum
+      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=y, X=X,
+                            VV=VV, H=3, VV=VV)$minimum
     }
   } else if(ncol(X) > 1 & method=="optim") {
     if(H==1) {
       beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=y, X=X,
-                         ses=ses, tau.sq=tau.sq, H=1, VV=VV)$par
+                         VV=VV, H=1)$par
     } else if(H==2) {
       beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=y, X=X,
-                         ses=ses, tau.sq=tau.sq, H=2, VV=VV)$par
+                         VV=VV, H=2)$par
     } else if(H==3) {
       beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=y, X=X,
-                         ses=ses, tau.sq=tau.sq, H=3, VV=VV)$par
+                         VV=VV, H=3)$par
     }
   } else if(method=="MM") {
     
