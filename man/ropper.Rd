@@ -1,42 +1,62 @@
 \name{ropper}
 \alias{ropper}
 \title{
-A Capitalized Title (ideally limited to 65 characters)
+Ranking-Optimized Population Posterior Expected Percentiles
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Computes ranking of cluster-specific estimates after performing a covariate
+adjustment.
 }
 \usage{
-ropper(x)
+ropper(Y, X, ses, tau.sq = c("reml", "kNN"), H=1, 
+       opt.method=c("MM", "optim"), control = list())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{Y}{
+The K x 1 vector of cluster-specific effect estimates.
+}
+  \item{X}{
+The K x p design matrix containing cluster-specific covariates.
+}
+  \item{ses}{
+The K x 1 vector sampling standard errors squared.
+}
+  \item{tau.sq}{
+Method for estimating the random effects variance. This can be either the 
+restricted maximum likelihood estimation (REML) or k-nearest neighbors.
+}
+  \item{H}{
+The degree of the approximation used for the unbiased risk estimator. This must 
+be an integer greater than or equal to 1. 
+}
+  \item{opt.method}{
+The optimization method used for computing the regression coefficient estimates. 
+This can be either an MM algorithm or the use of the \code{optim} function.       
+}
+  \item{control}{A list of control parameters specifying any changes to
+      default values of the optimization procedures. Full names of control 
+      list elements must be specified, otherwise, user-specifications are ignored.
+	See *Details*.
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list with the following components:
+\item{coefficients}{The vector of regression coefficients estimates}
+\item{objfn.track}{A vector containing the value of the objective function at each iteration.}
 }
 \references{
 %% ~put references to the literature/web site here ~
 }
 \author{
-%%  ~~who you are~~
+Nicholas C. Henderson and Nicholas Hartman
 }
 \note{
 %%  ~~further notes~~
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
@@ -50,12 +70,11 @@ function (x)
 {
   }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory (show via RShowDoc("KEYWORDS")):
-% \keyword{ ~kwd1 }
-% \keyword{ ~kwd2 }
+\keyword{ regression }
+\keyword{ robust }
 % Use only one keyword per line.
 % For non-standard keywords, use \concept instead of \keyword:
-% \concept{ ~cpt1 }
-% \concept{ ~cpt2 }
-% Use only one concept per line.
+\concept{ empirical Bayes }
+\concept{ loss-function driven estimation }
+\concept{ unbiased risk estimation }
+\concept{ ranking }

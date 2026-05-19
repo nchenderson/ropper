@@ -1,5 +1,5 @@
-ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1, 
-                   method=c("MM", "optim"), control = list()) {
+ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1, 
+                   opt.method=c("MM", "optim"), control = list()) {
   ##############################################
   ## Inputs:
   ##   y - length K vector of unit-specific estimates
@@ -19,11 +19,11 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   tol <- control$tol
   
   ## Get optimization method and method for estimating tau.sq:
-  method <- match.arg(method)
+  opt.method <- match.arg(opt.method)
   tau.sq <- match.arg(tau.sq)
   
-  if(method != "MM" | method != "optim") {
-       stop("The method argument should equal mm or optim")
+  if(method != "MM" | opt.method != "optim") {
+       stop("The opt.method argument should equal mm or optim")
   }
   
   if(tau.sq=="reml") {
@@ -43,29 +43,29 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   B <- tau.sq/(ses + tau.sq)
   VV <- sqrt(B/(2*ses + tau.sq))
  
-  if(ncol(X)==1 & method=="optim") {
+  if(ncol(X)==1 & opt.method=="optim") {
     if(H==1) {
-      beta.rank <- optimize(Qfunction, lower=-10, upper=10, y=y, X=X,
+      beta.rank <- optimize(Qfunction, lower=-10, upper=10, y=Y, X=X,
                             VV=VV, H=1, VV=VV)$minimum
     } else if(H==2) {
-      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=y, X=X,
+      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=Y, X=X,
                             VV=VV, H=2, VV=VV)$minimum
     } else if(H==3) {
-      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=y, X=X,
+      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=Y, X=X,
                             VV=VV, H=3, VV=VV)$minimum
     }
-  } else if(ncol(X) > 1 & method=="optim") {
+  } else if(ncol(X) > 1 & opt.method=="optim") {
     if(H==1) {
-      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=y, X=X,
+      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
                          VV=VV, H=1)$par
     } else if(H==2) {
-      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=y, X=X,
+      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
                          VV=VV, H=2)$par
     } else if(H==3) {
-      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=y, X=X,
+      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
                          VV=VV, H=3)$par
     }
-  } else if(method=="MM") {
+  } else if(opt.method=="MM") {
     
       lam <- sqrt(pi)/sqrt(2*tau.sq)
       afrac <- 1/3
@@ -73,17 +73,17 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
     
       ## Use MLE as initial value of beta.
       ww.mle <- ses + tau.sq
-      beta.old <- solve(crossprod(X, ww.mle*X), crossprod(X, ww.mle*y))
+      beta.old <- solve(crossprod(X, ww.mle*X), crossprod(X, ww.mle*Y))
     
       ObjFnVals <- rep(NA, maxiter + 1)
       BetaVals <- matrix(NA, nrow=maxiter + 1, ncol=ncol(X))
-      ObjFnVals[1] <-  Qfunction(beta.old, y=y, X=X, ses=ses, tau.sq=tau.sq,
+      ObjFnVals[1] <-  Qfunction(beta.old, y=Y, X=X, ses=ses, tau.sq=tau.sq,
                                  H=1)
       BetaVals[1,] <- beta.old
-      Qfunction <- function(beta.coef, y, X, ses, tau.sq, H)
+      Qfunction <- function(beta.coef, Y, X, ses, tau.sq, H)
       for(k in 1:maxiter) {
           Xbeta.old <- as.numeric(X%*%beta.old)
-          resids <- y - Xbeta.old
+          resids <- Y - Xbeta.old
           rr <- VV*resids
           tmp1 <- dnorm(resids, sd=1/VV)
           tmp2 <- lam*(1 - (pnorm(rr) - 0.5)^2)
@@ -93,12 +93,12 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
           wcomb <- w1 + w2*afrac
           XWV <- wcomb*VV*X
           XtVX <- crossprod(XV, XWV)
-          dvec <- as.numeric(gradgfn(beta.old, y=y, X=X, ses=ses, tau.sq=tau.sq))
+          dvec <- as.numeric(gradgfn(beta.old, y=Y, X=X, ses=ses, tau.sq=tau.sq))
       
-          vecterm1 <- crossprod(XV, w1*VV*y + w2*dvec + (w2*VV*Xbeta.old)*afrac)
+          vecterm1 <- crossprod(XV, w1*VV*Y + w2*dvec + (w2*VV*Xbeta.old)*afrac)
           beta.new <- as.numeric(solve(XtVX, vecterm1))
       
-          ObjFnVals[k+1] <- Qfunction(beta=beta.new, y=y, X=X, ses=ses, 
+          ObjFnVals[k+1] <- Qfunction(beta=beta.new, y=Y, X=X, ses=ses, 
                                       tau.sq=tau.sq, H=1)
           BetaVals[k+1,] <- beta.new
       
@@ -111,10 +111,11 @@ ropper <- function(y, X, ses, tau.sq = c("reml", "kNN"), H=1,
       }
       ObjFnVals <- ObjFnVals[!is.na(ObjFnVals)]
   }
+  ## Should add optimal percentiles to returned list.
   if(method=="optim") {
-    return(list(par=beta.rank, objfn=NULL))
+    return(list(coefficients=beta.rank, objfn=NULL))
   } else {
-    return(list(par=beta.new, objfn=ObjFnVals))
+    return(list(coefficients=beta.new, objfn=ObjFnVals))
   }
 }
 
