@@ -109,13 +109,18 @@ ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1,
           }
           beta.old <- beta.new
       }
+      beta.rank <- beta.new
       ObjFnVals <- ObjFnVals[!is.na(ObjFnVals)]
   }
+  ## Compute final residuals
+  resids <- as.numeric(Y - X%*%beta.rank)
+  ## Compute vector of population posterior expected ranks.
+  post.rank <- pnorm(VV*resids)
   ## Should add optimal percentiles to returned list.
   if(method=="optim") {
-    return(list(coefficients=beta.rank, objfn=NULL))
+    return(list(coefficients=beta.rank, ppep=post.rank, objfn=NULL))
   } else {
-    return(list(coefficients=beta.new, objfn=ObjFnVals))
+    return(list(coefficients=beta.rank, ppep=post.rank, objfn=ObjFnVals))
   }
 }
 

@@ -46,6 +46,7 @@ This can be either an MM algorithm or the use of the \code{optim} function.
 \value{
 A list with the following components:
 \item{coefficients}{The vector of regression coefficients estimates}
+\item{ppep}{The vector of population posterior expected percentiles}
 \item{objfn.track}{A vector containing the value of the objective function at each iteration.}
 }
 \references{
