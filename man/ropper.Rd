@@ -45,12 +45,13 @@ This can be either an MM algorithm or the use of the \code{optim} function.
 }
 \value{
 A list with the following components:
-\item{coefficients}{The vector of regression coefficients estimates}
-\item{ppep}{The vector of population posterior expected percentiles}
-\item{objfn.track}{A vector containing the value of the objective function at each iteration.}
+\item{coefficients}{The length-p vector of ranking-targeted regression coefficient estimates}
+\item{ppep}{The length-K vector of estiamted population posterior expected percentiles}
+\item{objfn.track}{A vector containing the value of the objective function at each iteration}
 }
 \references{
-%% ~put references to the literature/web site here ~
+Henderson, N. C., & Hartman, N. (2025). Targeted Parameter Estimation for Robust Empirical Bayes Ranking. 
+\emph{arXiv preprint}. \url{https://arxiv.org/abs/2511.16530}
 }
 \author{
 Nicholas C. Henderson and Nicholas Hartman
@@ -73,9 +74,8 @@ function (x)
 }
 \keyword{ regression }
 \keyword{ robust }
-% Use only one keyword per line.
-% For non-standard keywords, use \concept instead of \keyword:
 \concept{ empirical Bayes }
 \concept{ loss-function driven estimation }
 \concept{ unbiased risk estimation }
 \concept{ ranking }
+\concept{ mixed models }
