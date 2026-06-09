@@ -1,4 +1,4 @@
-Qfunction <- function(beta.coef, y, X, VV, H) {
+Qfunction <- function(beta.coef, Y, X, VV, H) {
   ### The ROPPER objective function to be minimized
   ## Inputs:
   ##.    beta.coef - vector of fixed-effects regression coefficients
@@ -7,7 +7,7 @@ Qfunction <- function(beta.coef, y, X, VV, H) {
   ##     V - length K vector of ranking shrinkage terms V_k
   ##     H - order of risk function approximation should be H = 1, H = 2, or H = 3
   
-  resids <- as.numeric(y - X%*%beta.coef)
+  resids <- as.numeric(Y - X%*%beta.coef)
   if(H==1) {
     term1 <- sqrt(tau.sq/(2*pi))*mean(VV*dnorm(VV*resids))
   } else if(H==2) {

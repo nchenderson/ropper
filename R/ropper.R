@@ -1,5 +1,6 @@
-ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1, 
-                   opt.method=c("MM", "optim"), control = list()) {
+ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1, 
+                   opt.method=c("MM", "optim"), trim.quant=0.0,
+                   control = list()) {
   ##############################################
   ## Inputs:
   ##   y - length K vector of unit-specific estimates
@@ -9,7 +10,7 @@ ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   ##   H - order of risk function approximation should be H = 1, H = 2, or H = 3
   
   ## Get values of control parameters maxiter and tol:
-  control.default <- list(maxiter = 100, tol = 1e-06)
+  control.default <- list(maxiter = 500, tol = 1e-06)
   namc <- names(control)
   if (!all(namc %in% names(control.default))) {
     stop("unknown names in control: ", namc[!(namc %in% names(control.default))])
@@ -20,24 +21,28 @@ ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   
   ## Get optimization method and method for estimating tau.sq:
   opt.method <- match.arg(opt.method)
-  tau.sq <- match.arg(tau.sq)
   
-  if(method != "MM" | opt.method != "optim") {
-       stop("The opt.method argument should equal mm or optim")
+  if(opt.method != "MM" & opt.method != "optim") {
+       stop("The opt.method argument should equal MM or optim")
   }
-  
-  if(tau.sq=="reml") {
-      ## Did we use winsorization for the REML estimate?
-  } else if(tau.sq=="kNN") {
-      
+  if(class(tau.sq) == "numeric") {
+    if(tau.sq <= 0.0) {
+        stop("The tau.sq argument should either be a positive number or equal
+                to either REML or kNN")
+    }
   }
   if(class(tau.sq) != "numeric") {
-       stop("The tau.sq argument should either be a positive number or equal
-            to either reml or kNN")
-       if(tau.sq <= 0.0) {
-           stop("The tau.sq argument should either be a positive number or equal
-                to either reml or kNN")
-       }
+     tau.sq <- match.arg(tau.sq)
+     if(tau.sq != "REML" & tau.sq !="kNN") {
+         stop("The tau.sq argument should either be a positive number or equal
+                to either REML or kNN")
+     }
+     if(tau.sq=="REML") {
+        ## Did we use winsorization for the REML estimate?
+        tau.sq <- REMLTausqEst(Y=Y, X=X, ses=ses, trim.quant=trim.quant) 
+     } else if(tau.sq=="kNN") {
+      
+     }
   }
   
   B <- tau.sq/(ses + tau.sq)
@@ -77,10 +82,8 @@ ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1,
     
       ObjFnVals <- rep(NA, maxiter + 1)
       BetaVals <- matrix(NA, nrow=maxiter + 1, ncol=ncol(X))
-      ObjFnVals[1] <-  Qfunction(beta.old, y=Y, X=X, ses=ses, tau.sq=tau.sq,
-                                 H=1)
+      ObjFnVals[1] <-  Qfunction(beta.old, Y=Y, X=X, VV=VV, H=1)
       BetaVals[1,] <- beta.old
-      Qfunction <- function(beta.coef, Y, X, ses, tau.sq, H)
       for(k in 1:maxiter) {
           Xbeta.old <- as.numeric(X%*%beta.old)
           resids <- Y - Xbeta.old
@@ -93,13 +96,12 @@ ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1,
           wcomb <- w1 + w2*afrac
           XWV <- wcomb*VV*X
           XtVX <- crossprod(XV, XWV)
-          dvec <- as.numeric(gradgfn(beta.old, y=Y, X=X, ses=ses, tau.sq=tau.sq))
+          dvec <- as.numeric(gradgfn(beta.old, Y=Y, X=X, ses=ses, tau.sq=tau.sq))
       
           vecterm1 <- crossprod(XV, w1*VV*Y + w2*dvec + (w2*VV*Xbeta.old)*afrac)
           beta.new <- as.numeric(solve(XtVX, vecterm1))
-      
-          ObjFnVals[k+1] <- Qfunction(beta=beta.new, y=Y, X=X, ses=ses, 
-                                      tau.sq=tau.sq, H=1)
+
+          ObjFnVals[k+1] <- Qfunction(beta=beta.new, Y=Y, X=X, VV=VV, H=1)
           BetaVals[k+1,] <- beta.new
       
           ## look at sum of squares of parameter changes to determine convergence 
@@ -117,7 +119,7 @@ ropper <- function(Y, X, ses, tau.sq = c("reml", "kNN"), H=1,
   ## Compute vector of population posterior expected ranks.
   post.rank <- pnorm(VV*resids)
   ## Should add optimal percentiles to returned list.
-  if(method=="optim") {
+  if(opt.method=="optim") {
     return(list(coefficients=beta.rank, ppep=post.rank, objfn=NULL))
   } else {
     return(list(coefficients=beta.rank, ppep=post.rank, objfn=ObjFnVals))

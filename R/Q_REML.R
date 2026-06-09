@@ -1,4 +1,4 @@
-Q_REML <- function(tau.sq, y, X, ses) {
+Q_REML <- function(tau.sq, Y, X, ses) {
   ######################################################################
   ##
   ## Input:
@@ -15,12 +15,12 @@ Q_REML <- function(tau.sq, y, X, ses) {
   mvar <- ses + tau.sq  ## marginal variances
   inv_mvar <- 1/mvar
   XtDX <- crossprod(X, X*inv_mvar)
-  XtDy <- crossprod(X, y*inv_mvar)
-  Py <- y - X%*%solve(XtDX, XtDy)
+  XtDy <- crossprod(X, Y*inv_mvar)
+  Py <- Y - X%*%solve(XtDX, XtDy)
   
   t1 <- sum(log(mvar))
   t2 <- determinant(XtDX, logarithm=TRUE)$modulus
-  t3 <- sum(y*inv_mvar*Py)
+  t3 <- sum(Y*inv_mvar*Py)
   ans <- t1 + t2 + t3
   return(ans)
 }

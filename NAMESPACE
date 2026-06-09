@@ -1,1 +1,1 @@
-export(ropper)
+export(ropper, PPER, BLUP, REMLTausqEst, KnnTausqEst)
