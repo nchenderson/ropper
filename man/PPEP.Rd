@@ -1,10 +1,10 @@
-\name{PPER}
-\alias{PPER}
+\name{PPEP}
+\alias{PPEP}
 \title{
-Population posterior expected ranks
+Population posterior expected percentiles
 }
 \description{
-Computes estimates of population posterior expected ranks given an estimate of 
+Computes estimates of population posterior expected percentiles given an estimate of 
 the regression coefficients and an estimate of the random effects variance.
 }
 \usage{
@@ -29,7 +29,7 @@ be a scalar greater than 0.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The population posterior expected percentiles
 }
 \value{
 A K x 1 vector of population posterior expected rank estimates.
@@ -44,9 +44,6 @@ Nicholas C. Henderson and Nicholas Hartman
 \note{
 %%  ~~further notes~~
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 \code{ropper}
 }
