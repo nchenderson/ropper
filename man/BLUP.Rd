@@ -35,7 +35,7 @@ be a scalar greater than 0.
 \details{
 The BLUP for cluster k is defined as
 \eqn{E(v_{k} | Y_{k} ) = B_{k}( Y_{k} - X_{k}^{T}\hat{\beta}) }, where
-\eqn{\hat{\beta}} is the vector of regression coefficient estimates and \eqn{V_{k}}
+\eqn{\hat{\beta}} is the vector of regression coefficient estimates and \eqn{B_{k}}
 is defined as \eqn{B_{k} = \tau^{2}/(\tau^{2} + ses_{k}) }
 }
 \value{
@@ -47,9 +47,6 @@ Nicholas C. Henderson and Nicholas Hartman
 \note{
 %%  ~~further notes~~
 }
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
 See also \code{\link{PPEP}}.
 }
