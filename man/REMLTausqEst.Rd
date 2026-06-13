@@ -43,7 +43,8 @@ the K x K matrix defined as
 The estimate of the random effects variance. A vector of length 1.
 }
 \references{
-%% ~put references to the literature/web site here ~
+Jiang, J., & Nguyen, T. (2021). Linear and Generalized Linear Mixed Models and Their Applications (2nd ed.). 
+Springer. \doi{10.1007/978-1-0716-1282-8}
 }
 \author{
 Nicholas C. Henderson and Nicholas Hartman
