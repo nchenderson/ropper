@@ -48,9 +48,6 @@ Henderson, N. C., & Hartman, N. (2025). Targeted Parameter Estimation for Robust
 \author{
 Nicholas C. Henderson and Nicholas Hartman
 }
-\note{
-%%  ~~further notes~~
-}
 \seealso{
 See also \code{\link{ropper}}, \code{\link{BLUP}}.
 }

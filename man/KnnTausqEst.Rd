@@ -47,15 +47,34 @@ estimate of the residual variance. Electronic Journal of Statistics, 12(1),
 \author{
 Nicholas C. Henderson and Nicholas Hartman
 }
-\note{
-%%  ~~further notes~~
-}
 \seealso{
 See also \code{\link{REMLTausqEst}}, \code{\link{ropper}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
+##########################################################
+###  Example of kNN estimation with simulated data  #####
+##########################################################
+n <- 500   ## 500 units
+## True tau.sq is 0.5
+tau.sq <- 0.5
+cluster.sizes <- 1 + rpois(n, lambda=5)
 
+xx <- rnorm(n) 
+theta.vec <- rnorm(n, sd=sqrt(tau.sq))
+
+## True fixed-effect function is pnorm(x)
+mu.vec <- pnorm(xx) + theta.vec 
+yy <- mu.vec + rnorm(n)/sqrt(cluster.sizes)
+
+## Fit model where it is assumed that fixed-effect
+## function is beta0 + beta1*x
+XX <- cbind(rep(1, n), xx)
+## define standard errors squared
+stderrs_sq <- 1/cluster.sizes 
+
+## Run Knn estimation with a 1 nearest neighbor approach
+tausq_hat_knn <- KnnTausqEst(Y=yy, X=XX, ses=stderrs_sq, k=1)
+tausq_hat_knn
 }
 \keyword{ regression }
 \keyword{ robust }

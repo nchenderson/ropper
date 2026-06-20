@@ -53,8 +53,28 @@ Nicholas C. Henderson and Nicholas Hartman
 See also \code{\link{ropper}},
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
+##########################################################
+###  Example of REML estimation with simulated data  #####
+##########################################################
+n <- 500   ## 500 units
+## True tau.sq is 0.5
+tau.sq <- 0.5
+cluster.sizes <- 1 + rpois(n, lambda=5)
 
+xx <- rnorm(n) 
+theta.vec <- rnorm(n, sd=sqrt(tau.sq))
+
+mu.vec <- xx + theta.vec 
+yy <- mu.vec + rnorm(n)/sqrt(cluster.sizes)
+
+## Fit model where it is assumed that fixed-effect
+## function is beta0 + beta1*x
+XX <- cbind(rep(1, n), xx)
+## define standard errors squared
+stderrs_sq <- 1/cluster.sizes 
+
+tausq_hat_reml <- REMLTausqEst(Y=yy, X=XX, ses=stderrs_sq)
+tausq_hat_reml
 }
 \keyword{ optimize }
 \keyword{ regression }

@@ -94,7 +94,8 @@ yy <- mu.vec + rnorm(n)/sqrt(cluster.sizes)
 ## Fit model where it is assumed that fixed-effect
 ## function is beta0 + beta1*x
 XX <- cbind(rep(1, n), xx)
-stderrs_sq <- 1/cluster.sizes ## define standard errors squared
+## define standard errors squared
+stderrs_sq <- 1/cluster.sizes 
 
 rfit <- ropper(Y=yy, X=XX, ses=stderrs_sq)
 
