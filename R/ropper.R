@@ -41,7 +41,7 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
         ## Did we use winsorization for the REML estimate?
         tau.sq <- REMLTausqEst(Y=Y, X=X, ses=ses, trim.quant=trim.quant) 
      } else if(tau.sq=="kNN") {
-      
+        tau.sq <- KnnTausqEst(Y=Y, X=X, ses=ses, trim.quant=trim.quant)
      }
   }
   
