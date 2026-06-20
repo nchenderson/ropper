@@ -44,9 +44,6 @@ A K x 1 vector of posterior mean estimates.
 \author{
 Nicholas C. Henderson and Nicholas Hartman
 }
-\note{
-%%  ~~further notes~~
-}
 \seealso{
 See also \code{\link{PPEP}}.
 }

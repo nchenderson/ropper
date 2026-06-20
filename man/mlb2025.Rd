@@ -5,7 +5,7 @@
 Baseball Winning Percentages in 2025
 }
 \description{
-Data on the number of wins for teams during the 2025 
+Data on the number of team wins during the 2025 
 major league baseball (MLB) season. The data includes 
 the following additional team characteristics: payroll, strength of schedule,
 and ballpark difficulty.

@@ -74,14 +74,43 @@ Henderson, N. C., & Hartman, N. (2025). Targeted Parameter Estimation for Robust
 \author{
 Nicholas C. Henderson and Nicholas Hartman
 }
-\note{
-%%  ~~further notes~~
-}
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-## Simulated Data Example for using ropper:
+#######################################################
+###  Example of using ropper with simulated data  #####
+#######################################################
+n <- 50
+tau.sq <- 0.5
+cluster.sizes <- 1 + rpois(n, lambda=5)
+
+xx <- rnorm(n) 
+theta.vec <- rnorm(n, sd=sqrt(tau.sq))
+## True fixed-effect function is pnorm(x)
+mu.vec <- pnorm(xx) + theta.vec 
+yy <- mu.vec + rnorm(n)/sqrt(cluster.sizes)
+
+## Fit model where it is assumed that fixed-effect
+## function is beta0 + beta1*x
+XX <- cbind(rep(1, n), xx)
+stderrs_sq <- 1/cluster.sizes ## define standard errors squared
+
+rfit <- ropper(Y=yy, X=XX, ses=stderrs_sq)
+
+## Regression coefficient estimates
+rfit$coefficients
+
+## ROPPER percentile estimates for first 5 units
+rfit$ppep[1:5]
+
+## Plot true random effect rankings vs. ROPPer rankings:
+true_ranks <- rank(theta.vec)
+ropper_ranks <- rank(rfit$ppep)
+
+plot(true_ranks, ropper_ranks, las=1,
+     xlab="True RE Ranking", ylab="ROPPER Ranking")
+abline(0, 1)
 }
 \keyword{ regression }
 \keyword{ robust }
