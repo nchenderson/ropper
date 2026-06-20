@@ -9,3 +9,6 @@ Imports: stats, utils
 Description: An R package that computes ranking of cluster-specific estimates after performing a covariate adjustment.
 License: GPL-2
 Encoding: UTF-8
+Depends: 
+    R (>= 3.5)
+LazyData: true

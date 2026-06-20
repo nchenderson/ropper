@@ -51,24 +51,24 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
   if(ncol(X)==1 & opt.method=="optim") {
     if(H==1) {
       beta.rank <- optimize(Qfunction, lower=-10, upper=10, y=Y, X=X,
-                            VV=VV, H=1, VV=VV)$minimum
+                            VV=VV, tau.sq=tau.sq, H=1)$minimum
     } else if(H==2) {
       beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=Y, X=X,
-                            VV=VV, H=2, VV=VV)$minimum
+                            VV=VV, tau.sq=tau.sq, H=2)$minimum
     } else if(H==3) {
       beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=Y, X=X,
-                            VV=VV, H=3, VV=VV)$minimum
+                            VV=VV, tau.sq=tau.sq, H=3)$minimum
     }
   } else if(ncol(X) > 1 & opt.method=="optim") {
     if(H==1) {
       beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
-                         VV=VV, H=1)$par
+                         VV=VV, tau.sq=tau.sq, H=1)$par
     } else if(H==2) {
       beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
-                         VV=VV, H=2)$par
+                         VV=VV, tau.sq=tau.sq, H=2)$par
     } else if(H==3) {
       beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
-                         VV=VV, H=3)$par
+                         VV=VV, tau.sq=tau.sq, H=3)$par
     }
   } else if(opt.method=="MM") {
     
@@ -82,7 +82,8 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
     
       ObjFnVals <- rep(NA, maxiter + 1)
       BetaVals <- matrix(NA, nrow=maxiter + 1, ncol=ncol(X))
-      ObjFnVals[1] <-  Qfunction(beta.old, Y=Y, X=X, VV=VV, H=1)
+      ObjFnVals[1] <-  Qfunction(beta.coef=beta.old, Y=Y, X=X, VV=VV, 
+                                 tau.sq=tau.sq, H=1)
       BetaVals[1,] <- beta.old
       for(k in 1:maxiter) {
           Xbeta.old <- as.numeric(X%*%beta.old)
@@ -101,7 +102,8 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
           vecterm1 <- crossprod(XV, w1*VV*Y + w2*dvec + (w2*VV*Xbeta.old)*afrac)
           beta.new <- as.numeric(solve(XtVX, vecterm1))
 
-          ObjFnVals[k+1] <- Qfunction(beta=beta.new, Y=Y, X=X, VV=VV, H=1)
+          ObjFnVals[k+1] <- Qfunction(beta.coef=beta.new, Y=Y, X=X, VV=VV, 
+                                      tau.sq=tau.sq, H=1)
           BetaVals[k+1,] <- beta.new
       
           ## look at sum of squares of parameter changes to determine convergence 

@@ -1,4 +1,4 @@
-Qfunction <- function(beta.coef, Y, X, VV, H) {
+Qfunction <- function(beta.coef, Y, X, VV, tau.sq, H) {
   ### The ROPPER objective function to be minimized
   ## Inputs:
   ##.    beta.coef - vector of fixed-effects regression coefficients
@@ -25,7 +25,6 @@ Qfunction <- function(beta.coef, Y, X, VV, H) {
     term1 <- t2 + (1/40)*15*f1*sqrt(tau.sq)*mean(VV*der1) + (1/40)*10*f1*sqrt(tau.sq^3)*mean((VV^3)*der3) + (1/40)*f1*sqrt(tau.sq^5)*mean((VV^5)*der5)
   }
   midrank_discr <- pnorm(VV*resids) - 0.5
-  #ans <- sum(midrank_discr*midrank_discr)
   ans <- -2*term1 + mean(midrank_discr*midrank_discr)
   return(ans)
 }
