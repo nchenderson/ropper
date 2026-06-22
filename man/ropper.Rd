@@ -70,13 +70,10 @@ A list with the following components:
 }
 \references{
 Henderson, N. C., & Hartman, N. (2025). Targeted Parameter Estimation for Robust Empirical Bayes Ranking. 
-\emph{arXiv preprint}. \url{https://arxiv.org/abs/2511.16530}
+\emph{arXiv preprint}. \doi{https://doi.org/10.48550/arXiv.2511.16530}.
 }
 \author{
 Nicholas C. Henderson and Nicholas Hartman
-}
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
 #######################################################
@@ -104,11 +101,11 @@ rfit <- ropper(Y=yy, X=XX, ses=stderrs_sq)
 rfit$coefficients
 
 ## ROPPER percentile estimates for first 5 units
-rfit$ppep[1:5]
+rfit$pepp[1:5]
 
 ## Plot true random effect rankings vs. ROPPer rankings:
 true_ranks <- rank(theta.vec)
-ropper_ranks <- rank(rfit$ppep)
+ropper_ranks <- rank(rfit$pepp)
 
 plot(true_ranks, ropper_ranks, las=1,
      xlab="True RE Ranking", ylab="ROPPER Ranking")

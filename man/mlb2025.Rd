@@ -40,9 +40,6 @@ from \url{https://baseball-reference.com}. The park factor index
 was retrieved from \url{https://baseballsavant.mlb.com/}. 
 Payroll projections for 2025 were obtained from \url{https://blogs.fangraphs.com/the-2025-payrolls-and-beyond/}.
 }
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
 \examples{
 data(mlb2025)
 str(mlb2025)
@@ -60,7 +57,7 @@ rank_mod$coef
 ## Look at ROPPER percentiles estimates
 ## Rank teams according to best percentiles
 mlb_estperc <- data.frame(Team=mlb2025$Team, 
-                          percentile=round(rank_mod$ppep, 4))
+                      percentile=round(rank_mod$pepp, 4))
 mlb_estperc <- mlb_estperc[order(-mlb_estperc$percentile),]
 
 head(mlb_estperc)

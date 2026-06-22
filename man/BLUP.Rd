@@ -1,6 +1,5 @@
 \name{BLUP}
 \alias{BLUP}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Posterior expected means
 }
@@ -45,10 +44,49 @@ A K x 1 vector of posterior mean estimates.
 Nicholas C. Henderson and Nicholas Hartman
 }
 \seealso{
-See also \code{\link{PPEP}}.
+See also \code{\link{PEPP}}.
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
+#######################################################
+###  Example of using PEPP with simulated data  #####
+#######################################################
+n <- 50
+tau.sq <- 0.5
+cluster.sizes <- 1 + rpois(n, lambda=5)
+
+xx <- rnorm(n) 
+theta.vec <- rnorm(n, sd=sqrt(tau.sq))
+## True fixed-effect function is pnorm(x)
+mu.vec <- pnorm(xx) + theta.vec 
+yy <- mu.vec + rnorm(n)/sqrt(cluster.sizes)
+
+## Fit model where it is assumed that fixed-effect
+## function is beta0 + beta1*x
+XX <- cbind(rep(1, n), xx)
+## define standard errors squared
+stderrs_sq <- 1/cluster.sizes 
+
+
+## Estimate regression coefficients by maximum likelihood 
+## estimation assuming that tau.sq = 0.5
+beta.mle <- solve(crossprod(XX, (stderrs_sq + 0.5)*XX), 
+                  crossprod(XX, (stderrs_sq + 0.5)*yy)) 
+## Extract the posterior means associated with the maximum 
+## likelihood estimate:
+blup.mle <- BLUP(beta.mle, Y=yy, X=XX, ses=stderrs_sq, 
+                 tau.sq=0.5)
+
+## Estimate regression coefficients using ROPPER assuming
+## that tau.sq = 0.5
+rfit <- ropper(Y=yy, X=XX, ses=stderrs_sq, tau.sq=0.5)
+
+## Extract posterior means associated with the ROPPER estimate
+blup.rop <- BLUP(rfit$coefficients, Y=yy, X=XX, 
+                 ses=stderrs_sq, tau.sq=0.5)
+
+plot(blup.mle, blup.rop, 
+     xlab="MLE Posterior Means", 
+     ylab="ROPPER Posterior Means")
 }
 \keyword{ regression }
 \concept{ empirical Bayes }

@@ -34,7 +34,15 @@ be an integer both greater than or equal to 1 and less than or equal to K.
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+Calculation of the nearest neighbor estimator involves a random
+split of the data into a training set \eqn{D_{1}} and a test set \eqn{D_{2}} of approximately equal sizes.
+The one-nearest neighbor estimator (i.e., when \code{k=1}) of \eqn{\tau^{2}} is 
+then calculated as
+\eqn{\hat{\tau}^{2}_{1-NN} = \frac{1}{K}\sum_{j=1}^{K} Y_{j}^{2} - \frac{1}{K_{T}}\sum_{j \in D_{2}} Y_{j}Y_{j}' 
+- \frac{1}{K_{T}}\sum_{j \in D_{2}} ses_{j}^{2}}, where \eqn{K_{T}} is the number of observations in the test
+set \eqn{D_{2}}, and \eqn{Y_{j}'} is the effect estimate associated 
+with the nearest neighbor \eqn{\mathbf{x}_{j}'} 
+of \eqn{\mathbf{x}_{j}} in the training set.
 }
 \value{
 The estimate of the random effects variance. A vector of length 1.

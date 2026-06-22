@@ -43,7 +43,7 @@ A K x 1 vector of posterior expected population percentile estimates.
 }
 \references{
 Henderson, N. C., & Hartman, N. (2025). Targeted Parameter Estimation for Robust Empirical Bayes Ranking. 
-\emph{arXiv preprint}. \url{https://arxiv.org/abs/2511.16530}
+\emph{arXiv preprint}. \doi{https://doi.org/10.48550/arXiv.2511.16530}
 }
 \author{
 Nicholas C. Henderson and Nicholas Hartman
@@ -89,7 +89,7 @@ pepp_rop1 <- rfit$pepp
 pepp_rop2 <- PEPP(rfit$coefficients, Y=yy, X=XX, 
                   ses=stderrs_sq, tau.sq=rfit$tau.sq.hat)
 
-all.equal(ppep_rop1, ppep_rop2)
+all.equal(pepp_rop1, pepp_rop2)
 }
 \keyword{ regression }
 \keyword{ robust }
