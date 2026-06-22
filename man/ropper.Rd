@@ -64,8 +64,9 @@ Default values of \code{control} are:
 \value{
 A list with the following components:
 \item{coefficients}{The length-p vector of ranking-targeted regression coefficient estimates}
-\item{ppep}{The length-K vector of estiamted population posterior expected percentiles}
+\item{pepp}{The length-K vector of estimated posterior expected population percentiles}
 \item{objfn.track}{A vector containing the value of the objective function at each iteration}
+\item{tau.sq.hat}{The estimate of the random effects variance}
 }
 \references{
 Henderson, N. C., & Hartman, N. (2025). Targeted Parameter Estimation for Robust Empirical Bayes Ranking. 

@@ -1,5 +1,6 @@
-PPEP <- function(beta.hat, Y, X, ses, tau.sq) {
-  ## Function to compute vector of population posterior expected ranks (PPER)
+PEPP <- function(beta.hat, Y, X, ses, tau.sq) {
+  ## Function to compute the vector of posterior expected 
+  ## population percentiles (PEPP)
   
   ## Compute residuals
   resids <- as.numeric(Y - X%*%beta.hat)

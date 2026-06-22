@@ -1,4 +1,4 @@
-export(ropper, PPEP, BLUP, REMLTausqEst, KnnTausqEst)
+export(ropper, PEPP, BLUP, REMLTausqEst, KnnTausqEst)
 importFrom("stats", "dnorm", "optim", "optimize", "pnorm", "quantile",
            "var")
 importFrom("utils", "modifyList")

@@ -122,9 +122,9 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
   post.rank <- pnorm(VV*resids)
   ## Should add optimal percentiles to returned list.
   if(opt.method=="optim") {
-    return(list(coefficients=beta.rank, ppep=post.rank, objfn=NULL))
+    return(list(coefficients=beta.rank, pepp=post.rank, objfn=NULL, tau.sq.hat=tau.sq))
   } else {
-    return(list(coefficients=beta.rank, ppep=post.rank, objfn=ObjFnVals))
+    return(list(coefficients=beta.rank, pepp=post.rank, objfn=ObjFnVals, tau.sq.hat=tau.sq))
   }
 }
 
