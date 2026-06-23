@@ -25,13 +25,13 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
   if(opt.method != "MM" & opt.method != "optim") {
        stop("The opt.method argument should equal MM or optim")
   }
-  if(class(tau.sq) == "numeric") {
+  if(inherits(tau.sq, "numeric")) {
     if(tau.sq <= 0.0) {
         stop("The tau.sq argument should either be a positive number or equal
                 to either REML or kNN")
     }
   }
-  if(class(tau.sq) != "numeric") {
+  if(!inherits(tau.sq, "numeric")) {
      tau.sq <- match.arg(tau.sq)
      if(tau.sq != "REML" & tau.sq !="kNN") {
          stop("The tau.sq argument should either be a positive number or equal
