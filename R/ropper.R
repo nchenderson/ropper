@@ -49,25 +49,26 @@ ropper <- function(Y, X, ses, tau.sq = c("REML", "kNN"), H=1,
   VV <- sqrt(B/(2*ses + tau.sq))
  
   if(ncol(X)==1 & opt.method=="optim") {
+    beta.mle <- abs(sum(X[,1]*Y)/sum(X[,1]*X[,1]))
     if(H==1) {
-      beta.rank <- optimize(Qfunction, lower=-10, upper=10, y=Y, X=X,
-                            VV=VV, tau.sq=tau.sq, H=1)$minimum
+      beta.rank <- optimize(Qfunction, lower=-5*beta.mle, upper=5*beta.mle, 
+                            Y=Y, X=X, VV=VV, tau.sq=tau.sq, H=1)$minimum
     } else if(H==2) {
-      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=Y, X=X,
-                            VV=VV, tau.sq=tau.sq, H=2)$minimum
+      beta.rank <- optimize(Qfunction, lower=-5*beta.mle, upper=5*beta.mle,
+                            Y=Y, X=X, VV=VV, tau.sq=tau.sq, H=2)$minimum
     } else if(H==3) {
-      beta.rank <- optimize(Qfunction, lower=-10,upper=10, y=Y, X=X,
-                            VV=VV, tau.sq=tau.sq, H=3)$minimum
+      beta.rank <- optimize(Qfunction, lower=-5*beta.mle, upper=5*beta.mle, 
+                            Y=Y, X=X, VV=VV, tau.sq=tau.sq, H=3)$minimum
     }
   } else if(ncol(X) > 1 & opt.method=="optim") {
     if(H==1) {
-      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
+      beta.rank <- optim(par=rep(0, ncol(X)), fn=Qfunction, Y=Y, X=X,
                          VV=VV, tau.sq=tau.sq, H=1)$par
     } else if(H==2) {
-      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
+      beta.rank <- optim(par=rep(0, ncol(X)), fn=Qfunction, Y=Y, X=X,
                          VV=VV, tau.sq=tau.sq, H=2)$par
     } else if(H==3) {
-      beta.rank <- optim(rep(0, ncol(X)), fn=Qfunction, y=Y, X=X,
+      beta.rank <- optim(par=rep(0, ncol(X)), fn=Qfunction, Y=Y, X=X,
                          VV=VV, tau.sq=tau.sq, H=3)$par
     }
   } else if(opt.method=="MM") {
