@@ -2,7 +2,7 @@ Package: ropper
 Type: Package
 Title: Ranking-Optimized Population Posterior Expected Percentiles
 Version: 0.2
-Date: 2026-07-10
+Date: 2026-07-11
 Authors@R: c(person("Nicholas", "Henderson", email = "nchender@umich.edu", 
              role = c("cre", "aut")), person("Nicholas", "Hartman", 
              email = "nhar@umich.edu", role = "aut"))
