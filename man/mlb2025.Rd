@@ -36,7 +36,7 @@ All MLB teams except the Athletics were included in this data.
 }
 \source{
 Total wins, total losses, and 2025 strength of schedule were obtained 
-from \url{https://baseball-reference.com}. The park factor index
+from \url{https://www.baseball-reference.com/}. The park factor index
 was retrieved from \url{https://baseballsavant.mlb.com/}. 
 Payroll projections for 2025 were obtained from \url{https://blogs.fangraphs.com/the-2025-payrolls-and-beyond/}.
 }

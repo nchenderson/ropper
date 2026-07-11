@@ -83,6 +83,7 @@ n <- 50
 tau.sq <- 0.5
 cluster.sizes <- 1 + rpois(n, lambda=5)
 
+set.seed(2507)
 xx <- rnorm(n) 
 theta.vec <- rnorm(n, sd=sqrt(tau.sq))
 ## True fixed-effect function is pnorm(x)
@@ -110,6 +111,20 @@ ropper_ranks <- rank(rfit$pepp)
 plot(true_ranks, ropper_ranks, las=1,
      xlab="True RE Ranking", ylab="ROPPER Ranking")
 abline(0, 1)
+
+######
+## Example of using ropper with optim for optimization
+## instead of MM
+######
+
+rfit.optim <- ropper(Y=yy, X=XX, ses=stderrs_sq, 
+                     opt.method="optim")
+
+## Compare coefficients obtained from the two optimization methods
+round(cbind(rfit$coefficients, rfit.optim$coefficients), 4)
+
+## Compare first 5 percentiles obtained from the two optimization methods
+round(cbind(rfit$pepp[1:5], rfit.optim$pepp[1:5]), 4)
 }
 \keyword{ regression }
 \keyword{ robust }

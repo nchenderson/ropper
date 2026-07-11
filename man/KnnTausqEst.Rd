@@ -34,7 +34,7 @@ be an integer both greater than or equal to 1 and less than or equal to K.
 }
 }
 \details{
-Calculation of the nearest neighbor estimator involves a random
+Calculation of the nearest neighbor estimator of the random effects variance involves a random
 split of the data into a training set \eqn{D_{1}} and a test set \eqn{D_{2}} of approximately equal sizes.
 The one-nearest neighbor estimator (i.e., when \code{k=1}) of \eqn{\tau^{2}} is 
 then calculated as
